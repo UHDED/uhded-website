@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="UHD Emergency Department quick links">
+  <title>UHD ED Quick Links</title>
+
+  <style>
+    :root {
+      --nhs-blue: #005eb8;
+      --nhs-dark-blue: #003d78;
+      --nhs-green: #007f3b;
+      --nhs-purple: #330072;
+      --text: #1f2933;
+      --muted: #5b6670;
+      --surface: #ffffff;
+      --border: #d8e2ea;
+      --background: #f2f7fb;
+      --focus: #ffdd00;
+      --shadow: 0 8px 22px rgba(0, 49, 95, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(242, 247, 251, 0.94), rgba(242, 247, 251, 0.96)),
+        radial-gradient(circle at top right, #d8ebf7 0, transparent 35%);
+    }
+
+    .site-header {
+      padding: 2.25rem 1rem 2rem;
+      color: white;
+      background: linear-gradient(135deg, var(--nhs-dark-blue), var(--nhs-blue));
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner,
+    main,
+    footer {
+      width: min(1180px, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.35rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      margin: 0.7rem 0 0;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      opacity: 0.95;
+    }
+
+    main {
+      padding: 1.5rem 0 3rem;
+    }
+
+    .search-panel {
+      padding: 1rem;
+      margin: 0 0 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-panel label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-weight: 700;
+    }
+
+    #linkSearch {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font: inherit;
+      background: white;
+      border: 2px solid #b9c8d3;
+      border-radius: 10px;
+    }
+
+    #linkSearch:focus {
+      border-color: var(--text);
+      outline: 4px solid var(--focus);
+      outline-offset: 1px;
+    }
+
+    .featured-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 104px;
+      padding: 1.2rem 1.3rem;
+      margin-bottom: 1.5rem;
+      color: white;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--nhs-dark-blue), var(--nhs-blue));
+      border: 2px solid transparent;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .featured-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0, 49, 95, 0.18);
+    }
+
+    .featured-link:focus {
+      border-color: var(--text);
+      outline: 4px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .featured-label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .featured-link strong {
+      display: block;
+      font-size: clamp(1.25rem, 3vw, 1.7rem);
+      line-height: 1.2;
+    }
+
+    .featured-link small {
+      display: block;
+      margin-top: 0.35rem;
+      line-height: 1.35;
+      opacity: 0.92;
+    }
+
+    .featured-link .arrow {
+      color: white;
+      font-size: 2rem;
+    }
+
+    .section {
+      margin-top: 2rem;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .section h2 {
+      margin: 0;
+      color: var(--nhs-dark-blue);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .quick-link {
+      display: flex;
+      min-height: 96px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      color: inherit;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--nhs-blue);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 49, 95, 0.06);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .quick-link:hover {
+      transform: translateY(-2px);
+      border-color: #8ab7d8;
+      box-shadow: 0 8px 18px rgba(0, 49, 95, 0.12);
+    }
+
+    .quick-link:focus {
+      outline: 4px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .quick-link strong {
+      display: block;
+      line-height: 1.25;
+    }
+
+    .quick-link small {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .arrow {
+      flex: 0 0 auto;
+      color: var(--nhs-blue);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .clinical .quick-link {
+      border-left-color: var(--nhs-green);
+    }
+
+    .clinical .arrow {
+      color: var(--nhs-green);
+    }
+
+    .administrative .quick-link {
+      border-left-color: var(--nhs-purple);
+    }
+
+    .administrative .arrow {
+      color: var(--nhs-purple);
+    }
+
+    .no-results {
+      display: none;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      background: #fff4cc;
+      border: 1px solid #f0c000;
+      border-radius: 10px;
+    }
+
+    footer {
+      padding: 1.25rem 0 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .link-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .header-inner,
+      main,
+      footer {
+        width: min(100% - 1rem, 1180px);
+      }
+
+      .site-header {
+        padding-top: 1.6rem;
+      }
+
+      .link-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-link {
+        min-height: 78px;
+      }
+
+      .featured-link {
+        min-height: 92px;
+      }
+    }
+ 
+  .trust-note {
+  margin: 0.7rem 0 0;
+  max-width: 720px;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  font-weight: 600;
+  opacity: 0.9;
+}
+    
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="eyebrow">University Hospitals Dorset</p>
+      <h1>ED Quick Links</h1>
+
+      <p class="subtitle">
+        Frequently used forms, clinical resources and administrative links for Bournemouth and Poole Emergency Departments.
+      </p>
+
+      <p class="trust-note">
+        Some links are internal and will require you to be on a Trust PC or log in with your nhs.net email.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <div class="search-panel">
+      <label for="linkSearch">Find a link</label>
+      <input id="linkSearch" type="search" placeholder="Start typing, for example: resus, Agyle, policy…">
+    </div>
+
+    <a class="featured-link searchable-link"
+       href="https://intranet.uhd.nhs.uk/systems/policies/emergency-department/general/ed-operating-policy.pdf"
+       target="_blank"
+       rel="noopener">
+      <span>
+        <span class="featured-label">Key document</span>
+        <strong>Emergency Department SOP</strong>
+        <small>Open the Emergency Department operating policy</small>
+      </span>
+      <span class="arrow">›</span>
+    </a>
+    
+        <a class="featured-link searchable-link"
+       href="https://nhs.sharepoint.com/:b:/r/sites/R0D_EmergencyDepartment-ShiftReportsandOperational/Shared%20Documents/Shift%20Reports%20and%20Operational/SOP%20%26%20Guidance/Interim%20corridor%20guidance%20V2.pdf?csf=1&web=1&e=3ng02X"
+       target="_blank"
+       rel="noopener">
+      <span>
+        <span class="featured-label">Key document</span>
+        <strong>Interim Ambulance Corridor Guidance</strong>
+        <small>Open the Emergency Department interim corridor policy</small>
+      </span>
+      <span class="arrow">›</span>
+    </a>
+
+    <!-- To add a link, copy one complete <a class="quick-link"> block,
+         paste it into the appropriate section, and change its href and wording. -->
+
+    <section class="section forms">
+      <div class="section-heading">
+        <h2>ED Forms</h2>
+        <span class="count">Audits, reporting and staff forms</span>
+      </div>
+
+      <div class="link-grid">
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/Pages/ResponsePage.aspx?id=slTDN7CF9UeyIge0jXdO410AiSRIAvRPj764K0t1u6BUMkNYS1VORlZGTFA2SlVGU1VHODhBVFVKVS4u"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Quality Audit</strong><small>Complete the ED quality audit</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/Pages/ResponsePage.aspx?id=slTDN7CF9UeyIge0jXdO410AiSRIAvRPj764K0t1u6BURUhRQUYxVVgzVkxEMFpXUlAyTkI5WTVDRC4u"
+           target="_blank"
+           rel="noopener">
+          <span><strong>UHD Emergency Department Incident, Issue &amp; Feedback Reporting</strong><small>Report an incident, issue or feedback</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/Pages/ResponsePage.aspx?id=slTDN7CF9UeyIge0jXdO410AiSRIAvRPj764K0t1u6BUQ1NCNDdUWUlIRlRVTVpHVUVBSjFTSjlaNS4u"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Poole Resus Checks</strong><small>Complete the Poole resuscitation checks</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/Pages/ResponsePage.aspx?id=slTDN7CF9UeyIge0jXdO410AiSRIAvRPj764K0t1u6BUODlJUzEwNEFBS0hQT0hQQ1FOWlUxQTIwNi4u"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Favourable Event Reporting (FERF)</strong><small>Recognise and report favourable events</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/e/k5hBfkD8dj"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Medical Staffing Sickness Form</strong><small>Submit medical staffing sickness</small></span>
+          <span class="arrow">›</span>
+        </a>
+        
+               <a class="quick-link searchable-link"
+           href="https://nhs.sharepoint.com/:f:/r/sites/R0D_EmergencyDepartment/Shared%20Documents/General/CQC%20Quality%20Audits?d=w784eb2fbd46e489ead3e6ed2f0e85ede&csf=1&web=1&e=E91kAT"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Deep dive quality audit</strong><small>Weekly deep dive using CQC domains</small></span>
+          <span class="arrow">›</span>
+        </a>
+        
+      </div>
+    </section>
+
+    <section class="section clinical">
+      <div class="section-heading">
+        <h2>Clinical links</h2>
+        <span class="count">Clinical guidance, forms and documents</span>
+      </div>
+
+      <div class="link-grid">
+        <a class="quick-link searchable-link" href="pharmacy.html">
+          <span><strong>Pharmacy, PGDs &amp; Medication Information</strong><small>Medication guidance and supporting information</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/e/eWni8Wwrwc"
+           target="_blank"
+           rel="noopener">
+          <span><strong>CPIS Reporting Form</strong><small>Open the online CPIS reporting form</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://nhs.sharepoint.com/:f:/r/sites/R0D_EmergencyDepartment/Shared%20Documents/Symphony%20Outage?csf=1&web=1&e=UJaBeB"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Major Incident Folder</strong><small>Major incident and outage documents</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://nhs.sharepoint.com/:f:/r/sites/R0D_EmergencyDepartment/Shared%20Documents/Nursing%20and%20Clinical/(1)Printable%20Documents?csf=1&web=1&e=OpBo0e"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Printable Forms</strong><small>Clinical and nursing documents</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://intranet.poole.nhs.uk/index.php/medical-clinical-care-group/emergency-department/fracture-clinic-guidelines"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Adult &amp; Children VFC Guide</strong><small>Virtual fracture clinic guidance</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://forms.office.com/e/ZbS2z6pUVM"
+           target="_blank"
+           rel="noopener">
+          <span><strong>HISU</strong><small>Open the HISU form</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://intranet.uhd.nhs.uk/index.php/ed"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Emergency Department Intranet Page</strong><small>Open the main UHD Emergency Department intranet page</small></span>
+          <span class="arrow">›</span>
+        </a>
+        
+        <a class="quick-link searchable-link" href="sdec.html">
+  <span>
+    <strong>Medical SDEC</strong>
+    <small>Streaming, referral criteria and alternative pathways</small>
+  </span>
+  <span class="arrow">›</span>
+</a>  
+        
+   <a class="quick-link searchable-link"
+           href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=1BDW8SmwFUO_ZdLTnBMJLnqQv-nQgbRGpfRguIPjDvZURU85NUI5NDJZUEtVS1lGUExZS002T1pDTy4u&origin=QRCode&route=shorturl"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Youthworker Referral</strong><small>Referrals to the Youthworker team out of hours or when youthworker not on site</small></span>
+          <span class="arrow">›</span>
+        </a>
+        
+      </div>
+    </section>
+
+    <section class="section administrative">
+      <div class="section-heading">
+        <h2>Administrative links</h2>
+        <span class="count">Management, handover and training resources</span>
+      </div>
+
+      <div class="link-grid">
+        <a class="quick-link searchable-link"
+           href="https://nhs.sharepoint.com/:f:/r/sites/R0D_EmergencyDepartment-ShiftReportsandOperational/Shared%20Documents/Shift%20Reports%20and%20Operational/Shift%20Reports?csf=1&web=1&e=kEcKdV"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Joint Band 7 Report</strong><small>Shift reports and operational information</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://sway.cloud.microsoft/pcGl9Z6hNTi1dr7v?ref=Link"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Band 7 Handover Sheet</strong><small>NIC handover document</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link"
+           href="https://nhs.sharepoint.com/:x:/r/sites/R0D_EmergencyDepartment-SeniorNursing/Shared%20Documents/Senior%20Nursing/(A)%20UHD%20B7%20Management/Band%207%20Management%20Spreadsheet.xlsx?d=w3a13ee144f174d9095a38fb083d86f4a&csf=1&web=1&e=Re5WeM"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Band 7 Management Sheet</strong><small>Senior nursing management spreadsheet</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+         <a class="quick-link searchable-link"
+           href="http://www.ednursecompetency.co.uk/"
+           target="_blank"
+           rel="noopener">
+          <span><strong>ED Nurse Competency Site</strong><small>Online competency platform</small></span>
+          <span class="arrow">›</span>
+        </a>
+
+        <a class="quick-link searchable-link" href="agyle.html">
+          <span><strong>Agyle</strong><small>Training videos and guidance</small></span>
+          <span class="arrow">›</span>
+        </a>
+    
+        <a class="quick-link searchable-link" href="https://sway.cloud.microsoft/c6A19oKCmCqHLJwi"
+           target="_blank"
+           rel="noopener">
+          <span><strong>Weekly Summary</strong><small>Weekly Update covering ED and UTC</small></span>
+          <span class="arrow">›</span>
+        </a>
+      </div>
+    </section>
+
+    <div id="noResults" class="no-results" role="status">
+      No matching links found. Try a shorter search term.
+    </div>
+  </main>
+
+  <footer>UHD Emergency Department quick links</footer>
+
+  <script>
+    const searchBox = document.getElementById("linkSearch");
+    const links = Array.from(document.querySelectorAll(".searchable-link"));
+    const sections = Array.from(document.querySelectorAll(".section"));
+    const noResults = document.getElementById("noResults");
+
+    function filterLinks() {
+      const term = searchBox.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      links.forEach(link => {
+        const matches = link.textContent.toLowerCase().includes(term);
+        link.style.display = matches ? "flex" : "none";
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(section => {
+        const hasVisibleLink = Array.from(section.querySelectorAll(".searchable-link"))
+          .some(link => link.style.display !== "none");
+        section.style.display = hasVisibleLink ? "block" : "none";
+      });
+
+      noResults.style.display = visibleCount === 0 ? "block" : "none";
+    }
+
+    searchBox.addEventListener("input", filterLinks);
+  </script>
+</body>
+</html>
