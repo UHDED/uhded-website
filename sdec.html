@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="UHD Medical SDEC streaming, referral criteria and alternative pathways">
+  <title>Medical SDEC - Streaming & Referral Criteria</title>
+
+  <style>
+    :root {
+      --nhs-blue: #005eb8;
+      --nhs-dark-blue: #003d78;
+      --nhs-green: #007f3b;
+      --nhs-red: #d5281b;
+      --nhs-orange: #ed8b00;
+      --nhs-purple: #330072;
+      --text: #1f2933;
+      --muted: #5b6670;
+      --surface: #ffffff;
+      --border: #d8e2ea;
+      --focus: #ffdd00;
+      --shadow: 0 8px 22px rgba(0, 49, 95, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(242,247,251,.95), rgba(242,247,251,.97)),
+        radial-gradient(circle at top right, #d8ebf7 0, transparent 35%);
+    }
+
+    a { color: inherit; }
+
+    .site-header {
+      padding: 2.1rem 1rem 1.8rem;
+      color: white;
+      background: linear-gradient(135deg, var(--nhs-dark-blue), var(--nhs-blue));
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner, main, footer {
+      width: min(1180px, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 .3rem;
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      max-width: 850px;
+      margin: .65rem 0 0;
+      font-size: 1.02rem;
+      line-height: 1.45;
+      opacity: .96;
+    }
+
+    .trust-note {
+      max-width: 850px;
+      margin: .55rem 0 0;
+      font-size: .9rem;
+      line-height: 1.4;
+      font-weight: 600;
+      opacity: .9;
+    }
+
+    main { padding: 1.35rem 0 2.7rem; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      margin-bottom: 1rem;
+      color: var(--nhs-dark-blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+
+    .back-link:focus,
+    .jump-link:focus,
+    .policy-link:focus {
+      outline: 4px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-banner,
+    .intro-panel {
+      padding: 1rem 1.15rem;
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-banner {
+      color: white;
+      background: linear-gradient(135deg, #005a30, var(--nhs-green));
+    }
+
+    .contact-banner .label {
+      display: block;
+      margin-bottom: .2rem;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .contact-banner strong {
+      display: block;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      margin-bottom: .25rem;
+    }
+
+    .contact-banner small {
+      display: block;
+      line-height: 1.4;
+      opacity: .95;
+    }
+
+    .intro-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .intro-panel strong {
+      display: block;
+      margin-bottom: .35rem;
+      color: var(--nhs-dark-blue);
+    }
+
+    .intro-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .jump-panel {
+      padding: .8rem .9rem;
+      margin-bottom: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .jump-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+
+    .jump-link {
+      display: inline-block;
+      padding: .48rem .68rem;
+      color: var(--nhs-dark-blue);
+      font-size: .85rem;
+      font-weight: 700;
+      text-decoration: none;
+      background: #e8f1f8;
+      border: 1px solid #bed4e6;
+      border-radius: 999px;
+    }
+
+    .jump-link:hover { background: #dcebf6; }
+
+    .section {
+      margin-top: 1.25rem;
+      scroll-margin-top: 1rem;
+    }
+
+    .section h2 {
+      margin: 0 0 .65rem;
+      color: var(--nhs-dark-blue);
+      font-size: clamp(1.3rem, 3vw, 1.75rem);
+    }
+
+    .panel {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--nhs-blue);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,49,95,.06);
+    }
+
+    .panel.green { border-left-color: var(--nhs-green); }
+    .panel.red { border-left-color: var(--nhs-red); }
+    .panel.orange { border-left-color: var(--nhs-orange); }
+    .panel.purple { border-left-color: var(--nhs-purple); }
+    .panel.grey { border-left-color: #768692; }
+
+    .panel-body {
+      padding: .85rem 1rem;
+    }
+
+    .compact-list {
+      margin: 0;
+      padding-left: 1.15rem;
+      columns: 3 240px;
+      column-gap: 2rem;
+    }
+
+    .compact-list li {
+      break-inside: avoid;
+      margin: 0 0 .5rem;
+      line-height: 1.4;
+    }
+
+    .compact-list li:last-child { margin-bottom: 0; }
+
+    .criteria-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .criteria-item {
+      padding: .85rem 1rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .criteria-item:last-child { border-right: none; }
+
+    .criteria-item strong {
+      display: block;
+      color: var(--nhs-dark-blue);
+      margin-bottom: .2rem;
+    }
+
+    .criteria-item span {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .group-item {
+      padding: .8rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .group-item:nth-child(odd) {
+      border-right: 1px solid var(--border);
+    }
+
+    .group-item:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+
+    .group-item.full {
+      grid-column: 1 / -1;
+      border-right: none;
+    }
+
+    .group-item strong {
+      display: block;
+      margin-bottom: .2rem;
+      line-height: 1.3;
+    }
+
+    .group-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.42;
+    }
+
+    .group-item ul {
+      margin: .35rem 0 0;
+      padding-left: 1.1rem;
+    }
+
+    .group-item li {
+      margin: .2rem 0;
+      line-height: 1.38;
+    }
+
+    .note {
+      margin-top: .55rem;
+      padding: .55rem .65rem;
+      background: #f7f9fb;
+      border-left: 4px solid #768692;
+      border-radius: 6px;
+      font-size: .9rem;
+      line-height: 1.42;
+    }
+
+    .policy-link {
+      color: var(--nhs-blue);
+      font-weight: 700;
+    }
+
+    .pathway-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .pathway-table th,
+    .pathway-table td {
+      padding: .7rem .8rem;
+      vertical-align: top;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+
+    .pathway-table th {
+      width: 34%;
+      color: var(--nhs-dark-blue);
+      font-size: .94rem;
+    }
+
+    .pathway-table tr:last-child th,
+    .pathway-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .subnote {
+      display: block;
+      margin-top: .25rem;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .patient-note {
+      padding: .9rem 1rem;
+      margin-top: 1.25rem;
+      background: #fff4cc;
+      border: 1px solid #f0c000;
+      border-radius: 10px;
+      line-height: 1.45;
+    }
+
+    .patient-note strong {
+      color: #594600;
+    }
+
+    footer {
+      padding: 1rem 0 1.8rem;
+      color: var(--muted);
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .top-grid { grid-template-columns: 1fr; }
+      .criteria-row { grid-template-columns: 1fr; }
+      .criteria-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .criteria-item:last-child { border-bottom: none; }
+      .compact-list { columns: 2 220px; }
+    }
+
+    @media (max-width: 620px) {
+      .header-inner, main, footer {
+        width: min(100% - 1rem, 1180px);
+      }
+
+      .site-header { padding-top: 1.55rem; }
+
+      .group-grid { grid-template-columns: 1fr; }
+
+      .group-item,
+      .group-item:nth-child(odd),
+      .group-item:nth-last-child(-n+2) {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .group-item:last-child { border-bottom: none; }
+
+      .compact-list { columns: 1; }
+
+      .pathway-table,
+      .pathway-table tbody,
+      .pathway-table tr,
+      .pathway-table th,
+      .pathway-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .pathway-table tr {
+        padding: .65rem .8rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .pathway-table th,
+      .pathway-table td {
+        padding: 0;
+        border: none;
+      }
+
+      .pathway-table td { margin-top: .2rem; }
+      .pathway-table tr:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="eyebrow">University Hospitals Dorset</p>
+      <h1>Medical SDEC</h1>
+      <p class="subtitle">Streaming and referral criteria, plus alternative pathways for patients who are safe for discharge.</p>
+      <p class="trust-note">Some links are internal and will require you to be on a Trust PC or log in with your nhs.net email.</p>
+    </div>
+  </header>
+
+  <main>
+    <a class="back-link" href="index.html">‹ Back to ED Quick Links</a>
+
+    <div class="top-grid">
+      <div class="contact-banner">
+        <span class="label">SDEC streaming number</span>
+        <strong>BH 6080 <p>
+          PH Via Alertive</strong>
+        <small>For Medical SDEC streaming and referral.</small>
+      </div>
+
+      <div class="intro-panel">
+        <strong>What is Medical SDEC?</strong>
+        <p>Medical SDEC is an admission avoidance service. It should be used for patients who would otherwise need admission to hospital for investigation, treatment or medical review.</p>
+      </div>
+    </div>
+
+    <nav class="jump-panel" aria-label="Page sections">
+      <div class="jump-links">
+        <a class="jump-link" href="#criteria">Core criteria</a>
+        <a class="jump-link" href="#exclusions">Exclusions</a>
+        <a class="jump-link" href="#direct-stream">Direct stream</a>
+        <a class="jump-link" href="#assessment">Following assessment</a>
+        <a class="jump-link" href="#ed-referral">ED referral</a>
+        <a class="jump-link" href="#not-sdec">Usually dischargeable</a>
+        <a class="jump-link" href="#alternatives">Alternative pathways</a>
+      </div>
+    </nav>
+
+    <section class="section" id="criteria">
+      <h2>Core SDEC criteria</h2>
+      <div class="panel green">
+        <div class="criteria-row">
+          <div class="criteria-item">
+            <strong>Mobility</strong>
+            <span>Independently mobile</span>
+          </div>
+          <div class="criteria-item">
+            <strong>NEWS</strong>
+            <span>NEWS &lt;5</span>
+          </div>
+          <div class="criteria-item">
+            <strong>Age / frailty</strong>
+            <span>&lt;85 years old; if &gt;75, CFS must be &lt;6</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="exclusions">
+      <h2>Exclusions</h2>
+      <div class="panel red">
+        <div class="panel-body">
+          <ul class="compact-list">
+            <li><strong>Diagnostic uncertainty for specialty</strong> — review prior to referral to ensure the most appropriate specialty.</li>
+            <li>Requires a hospital bed / overnight stay.</li>
+            <li>STEMI or stroke.</li>
+            <li>Social admission.</li>
+            <li>Confusion.</li>
+            <li>Requires isolation / infection control / D&amp;V.</li>
+            <li>Oxygen requirement.</li>
+            <li>Acute asthma exacerbation.</li>
+            <li>Seizures.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="direct-stream">
+      <h2>Direct stream following initial triage</h2>
+      <div class="panel">
+        <div class="group-grid">
+          <div class="group-item">
+            <strong>Chest pain</strong>
+            <p>ECG required prior to referral.</p>
+            <ul>
+              <li>Pleuritic chest pain / suspected PE</li>
+              <li>Cardiac history and/or risk factors</li>
+              <li>Known or suspected pericarditis</li>
+            </ul>
+          </div>
+
+          <div class="group-item">
+            <strong>Breathlessness</strong>
+            <ul>
+              <li>Non-resolving LRTI despite antibiotics</li>
+              <li>Heart failure with no oxygen requirement (increasing SOB/oedema)</li>
+            </ul>
+          </div>
+
+          <div class="group-item">
+            <strong>Headache</strong>
+            <ul>
+              <li>Known migraine, failed to improve with own triptan</li>
+              <li>Non-traumatic headache with red flags — GCS must be 15</li>
+              <li>Known IIH with headache and/or visual disturbance</li>
+            </ul>
+            <div class="note">Suspected GCA should use the rapid access GCA pathway via EFORM.</div>
+          </div>
+
+          <div class="group-item">
+            <strong>Other direct-stream presentations</strong>
+            <ul>
+              <li>Cellulitis — systemically unwell/febrile or worsening despite PO antibiotics</li>
+              <li>Haemoptysis</li>
+              <li>AF not rate controlled (&gt;110) and/or ongoing symptoms</li>
+              <li>Severe vertigo</li>
+              <li>Worsening symptoms with recently diagnosed PE or DVT</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="assessment">
+      <h2>Suitable following brief face-to-face clinician assessment</h2>
+      <div class="panel orange">
+        <div class="panel-body" style="padding-bottom:.55rem;">
+          <p style="margin:0;color:var(--muted);line-height:1.45;"><strong style="color:var(--text);">Assessment should be undertaken by a senior clinician/ACP or discussed with EPIC.</strong></p>
+        </div>
+
+        <div class="group-grid">
+          <div class="group-item">
+            <strong>Unexplained TLOC</strong>
+            <p>Vasovagal, postural or situational syncope can be discharged direct from ED and does not require SDEC unless there are additional concerns.</p>
+            <div class="note">
+              <a class="policy-link" href="https://intranet.rbch.nhs.uk/policies/acute-medicine/SOP-TLOC.pdf" target="_blank" rel="noopener">Open TLOC policy</a>
+            </div>
+          </div>
+
+          <div class="group-item">
+            <strong>New neurological symptoms</strong>
+            <p>Neurology must not be consistent with stroke or TIA.</p>
+          </div>
+
+          <div class="group-item">
+            <strong>Rash with systemic symptoms / clinical concern</strong>
+            <p>For example vasculitis. Most rashes can be managed by GP/UTC.</p>
+          </div>
+
+          <div class="group-item">
+            <strong>Severe hypertension (&gt;180/120) with suspected end-organ damage</strong>
+            <p>Symptoms associated with EOD include visual changes, confusion, altered neurology or seizures, chest pain, SOB, oedema and reduced UOP. Headache in isolation is not evidence of EOD.</p>
+            <div class="note">
+              Severe HTN without EOD does not require hospital admission unless there are additional concerns.
+              <br><a class="policy-link" href="https://intranet.uhd.nhs.uk/systems/policies/acute-med/index.php" target="_blank" rel="noopener">Open Acute Medicine policies</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ed-referral">
+      <h2>SDEC referral following assessment by ED clinician</h2>
+      <div class="panel purple">
+        <div class="panel-body">
+          <ul class="compact-list">
+            <li>Any of the direct-stream or brief-assessment categories above.</li>
+            <li>AKI stage 1.</li>
+            <li>Unresolved UTI or suspected pyelonephritis.</li>
+            <li>Overdose — discharged by liaison psych, or accidental overdose, accepting treatment with &lt;6 hours of treatment/monitoring required.</li>
+            <li>New diagnosis brain lesion requiring further imaging.</li>
+            <li>New or worsening hyponatraemia (&gt;125).</li>
+            <li>Fever or infection with unclear source.</li>
+            <li>Fever in returning traveller with no need for barrier/isolation.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="not-sdec">
+      <h2>Usually dischargeable directly from ED</h2>
+      <div class="panel grey">
+        <div class="panel-body">
+          <p style="margin:0 0 .7rem;color:var(--muted);line-height:1.45;">
+            Not suitable for routine SDEC streaming. May be "pulled" at the discretion of the SDEC Consultant or ACP depending on capacity.
+          </p>
+          <ul class="compact-list">
+            <li>Palpitations with no other symptoms and normal ECG.</li>
+            <li>Rate-controlled AF (HR &lt;110) with no ongoing symptoms.</li>
+            <li>Headache with no red flags.</li>
+            <li>Headache with history of migraine — has not taken triptan.</li>
+            <li>Deranged LFTs with clear cause (e.g. viral) — GP to repeat bloods.</li>
+            <li>Cellulitis, systemically well, not yet trialled PO antibiotics.</li>
+            <li>LRTI with no oxygen requirement.</li>
+            <li>Chest pain &lt;40 years, normal ECG, no FH.</li>
+            <li>Severe hypertension (&gt;180/120) with no suspicion of end-organ damage.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="alternatives">
+      <h2>Alternative pathways for patients safe for discharge</h2>
+      <div class="panel grey">
+        <table class="pathway-table">
+          <tbody>
+            <tr>
+              <th>Suspected GCA</th>
+              <td>Rapid access GCA clinic referral via EFORM.<span class="subnote">Management flow chart available within the referral form.</span></td>
+            </tr>
+            <tr>
+              <th>Suspected lower limb DVT</th>
+              <td>DVT clinic referral via EFORM.</td>
+            </tr>
+            <tr>
+              <th>New heart failure / AF / stable angina</th>
+              <td>Ambulatory cardiac clinic referral via EFORM.</td>
+            </tr>
+            <tr>
+              <th>Suspected TIA</th>
+              <td>Neurovascular SDEC via bleep.</td>
+            </tr>
+            <tr>
+              <th>Suspected malignancy</th>
+              <td>2-week-wait referral to the appropriate specialty.</td>
+            </tr>
+            <tr>
+              <th>Incidental findings</th>
+              <td>Referral to the appropriate specialty for follow-up.<span class="subnote">Nodule MDT referrals via EFORM.</span></td>
+            </tr>
+            <tr>
+              <th>Specialty review / advice</th>
+              <td>Consider A&amp;G via GP, OP referral or specialty helplines.<span class="subnote">SDEC cannot facilitate specialty reviews e.g. Derm/Rheum/Gastro unless agreed in advance with specialty and AMU Consultant.</span></td>
+            </tr>
+            <tr>
+              <th>Elective procedures</th>
+              <td>For example drains, iron infusions or blood transfusions — arrange via TIU.<span class="subnote">Drains, infusions and transfusions cannot be facilitated in SDEC.</span></td>
+            </tr>
+            <tr>
+              <th>Hypertension without end-organ damage</th>
+              <td>GP follow-up.<span class="subnote">See "Managing severe hypertension and hypertensive emergencies in Acute Medicine" policy.</span></td>
+            </tr>
+            <tr>
+              <th>First seizure (fully recovered)</th>
+              <td>Neuro referral for first fit OP review.</td>
+            </tr>
+            <tr>
+              <th>Chronic / non-urgent health</th>
+              <td>Consider GP follow-up.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="patient-note">
+      <strong>Information for patients:</strong>
+      Please inform all patients that SDEC is an Emergency clinic and they may be required to wait up to 4 hours in the department. This time may be longer if further tests are required.
+    </div>
+  </main>
+
+  <footer>Medical SDEC team · August 2026</footer>
+</body>
+</html>
